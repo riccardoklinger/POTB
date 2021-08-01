@@ -1,11 +1,15 @@
+html,
+body {
+	height: 82%;
+	margin: 0;
+}
 
-		html, body {
-			height: 100%;
-			margin: 0;
-		}
-		#map {
-			width: 600px;
-			height: 400px;
-		}
+body {
+	padding: 0;
+	margin: 0;
+}
 
-body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }
+#map {
+	height: 100%;
+	width: 100%;
+}

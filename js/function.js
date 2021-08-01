@@ -31,7 +31,7 @@ var elevation_options = {
     // Default chart colors: theme lime-theme, magenta-theme, ...
     theme: "lightblue-theme",
     // Chart container outside/inside map container
-    detached: false,
+    detached: true,
     // if (detached), the elevation chart container
     elevationDiv: "#elevationProfile",
     // if (!detached) autohide chart profile on chart mouseleave
@@ -193,7 +193,7 @@ var logo = L.control({
 });
 logo.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'myControl');
-    var img_log = "<div class='myClass'><img src=\"images/logo.png\"></img></div>";
+    var img_log = "<div class='myClass'><img src=\"images/logo.png\" width='48px'></img></div>";
     this._div.innerHTML = img_log;
     return this._div;
 }
