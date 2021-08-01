@@ -27,6 +27,12 @@ var DATA = {
         name: "Doberdol-Milishevc",
     },
 }
+var HOSTCATEGORIES = [
+    'pension',
+    'hotel',
+    'guesthouse',
+    'hut'
+]
 var elevation_options = {
     // Default chart colors: theme lime-theme, magenta-theme, ...
     theme: "lightblue-theme",
@@ -61,7 +67,7 @@ var elevation_options = {
     // Display altitude info: true || "summary"
     altitude: true,
     // Summary track info style: "line" || "multiline" || false
-    summary: 'line',
+    summary: 'inline',
     // Toggle chart ruler filter.
     ruler: true,
     // Toggle chart legend filter.
@@ -69,7 +75,8 @@ var elevation_options = {
     // Toggle "leaflet-almostover" integration
     almostOver: false,
     // Toggle "leaflet-distance-markers" integration
-    distanceMarkers: false,
+    distanceMarkers: true,
+    useLeafletMarker: true,
     // Render chart profiles as Canvas or SVG Paths
     preferCanvas: true
 };
@@ -81,7 +88,7 @@ var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/
 })
 var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     maxZoom: 17,
-    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 }).addTo(map);
 var baseLayers = {
     "Topo": OpenTopoMap,
@@ -168,7 +175,7 @@ if (parseInt(hashes.split("#")[1]) >= 0) {
 }
 id = "19OlGztoPXBhquu674QW02aadb4TINQBX9gODSY7hi54"; //ricardo
 id2 = "1qemF3mEQGON_YomDqP-0_CSsYZJL_yOQSitGKrtdAhM"; //riccardo
-$.getJSON("https://spreadsheets.google.com/feeds/list/" + id2 + "/1/public/values?alt=json", function (data) {
+$.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values?alt=json", function (data) {
     //first row "title" column
     var entries = data.feed.entry;
     var group = new L.featureGroup();
@@ -181,20 +188,86 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id2 + "/1/public/value
         var lat = entry['gsx$lat']['$t'];
         var popupText = title;
         var markerLocation = new L.LatLng(lat, lon);
-        var marker = new L.Marker(markerLocation);
+        var marker = new L.Marker(markerLocation).bindPopup(popupText);
+        console.log(title)
         group.addLayer(marker);
-        marker.bindPopup(popupText);
+        marker.on('click', function (e) {
+        this.openPopup();
+        });
     }
     map.addLayer(group);
 });
 
 var logo = L.control({
-    position: 'bottomleft'
+    position: 'topleft'
 });
 logo.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'myControl');
-    var img_log = "<div class='myClass'><img src=\"images/logo.png\" width='48px'></img></div>";
+    var img_log = "<div class='myClass'><img src=\"images/logo.png\" width='30px'></img></div>";
     this._div.innerHTML = img_log;
     return this._div;
 }
 logo.addTo(map);
+
+// adding hosts
+$.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/2/public/values?alt=json", function (data) {
+    //first row "title" column
+    var entries = data.feed.entry;
+    var hosts = new L.featureGroup();
+    //Loop through spreadsheet entries
+    for (var i = 0; i < entries.length; i++) {
+        var entry = entries[i];
+        //Assuming we have columns with these names
+        var title = entry['gsx$title']['$t'];
+        var lon = entry['gsx$lon']['$t'];
+        var lat = entry['gsx$lat']['$t'];
+        var cat = entry['gsx$category']['$t'];
+        var popupText = title;
+        var markerLocation = new L.LatLng(lat, lon);
+        var marker = new L.Marker(markerLocation, {icon: colorMarker(cat)}).bindPopup(popupText);
+        console.log(title)
+        hosts.addLayer(marker);
+        marker.on('click', function (e) {
+        this.openPopup();
+        });
+    }
+    map.addLayer(hosts);
+    layerControl.addOverlay(hosts,"Hosts");
+    function colorMarker(Category) {
+        var greenIcon = L.icon({
+    iconUrl: 'images/leaf-green.png',
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+var redIcon = L.icon({
+    iconUrl: 'images/leaf-red.png',
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+var orangeIcon = L.icon({
+    iconUrl: 'images/leaf-orange.png',
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+  switch (Category) {
+    /*Icons need to be defined beforehand 
+      according to leaflet-color-marker documentation*/
+    case 'Hut':            return greenIcon; break; 
+    case 'Hotel':   return redIcon; break;
+    case 'Guesthouse':   return greenIcon; break;
+    case 'Pension': return orangeIcon; break;
+  }
+}
+
+
+
+});
