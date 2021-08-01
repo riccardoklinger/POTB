@@ -222,7 +222,9 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/2/public/values
         var lon = entry['gsx$lon']['$t'];
         var lat = entry['gsx$lat']['$t'];
         var cat = entry['gsx$category']['$t'];
-        var popupText = title;
+        var image = entry['gsx$photo']['$t'];
+        var loc = entry['gsx$location']['$t'];
+        var popupText = loc + ": " + title + "<br>" + "<img src='" + image + "' width='100px'></img>";
         var markerLocation = new L.LatLng(lat, lon);
         var marker = new L.Marker(markerLocation, {icon: colorMarker(cat)}).bindPopup(popupText);
         console.log(title)
