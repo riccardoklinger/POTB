@@ -54,6 +54,7 @@ var elevation_options = {
     theme: "lightblue-theme",
     // Chart container outside/inside map container
     detached: false,
+    width: 400,
     // if (detached), the elevation chart container
     elevationDiv: "#elevationProfile",
     // if (!detached) autohide chart profile on chart mouseleave
@@ -61,7 +62,7 @@ var elevation_options = {
     // if (!detached) initial state of chart profile control
     collapsed: true,
     // if (!detached) control position on one of map corners
-    //position: "bottomright",
+    position: "bottomright",
     // Autoupdate map center on chart mouseover.
     followMarker: true,
     // Autoupdate map bounds on chart update.
@@ -94,7 +95,7 @@ var elevation_options = {
     distanceMarkers: true,
     useLeafletMarker: true,
     // Render chart profiles as Canvas or SVG Paths
-    preferCanvas: false
+    preferCanvas: true
 };
 // load a tile layer
 var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -113,11 +114,10 @@ var baseLayers = {
 
 
 var overlays = {};
-
-var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 var controlElevation = L.control.elevation(elevation_options);
 controlElevation.loadChart(map);
 controlElevation.hide()
+var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 
 
 function loadTrace(track, i, mode) {
