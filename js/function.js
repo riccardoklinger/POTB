@@ -3,7 +3,7 @@ var map = L.map('map', {
     renderer: L.canvas({
         tolerance: 10
     })
-}).setView([42.5206, 10.0073], 10);
+}).setView([42.5206, 20.0073], 10);
 
 var DATA = {
     track_1: {
