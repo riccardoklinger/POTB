@@ -92,7 +92,7 @@ var elevation_options = {
     // Toggle "leaflet-almostover" integration
     almostOver: false,
     // Toggle "leaflet-distance-markers" integration
-    distanceMarkers: true,
+    //distanceMarkers: true,
     useLeafletMarker: true,
     // Render chart profiles as Canvas or SVG Paths
     preferCanvas: true

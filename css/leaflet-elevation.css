@@ -129,6 +129,7 @@
 
 .elevation-control.elevation .brush .overlay {
   cursor: unset;
+  position: relative;
 }
 
 .elevation-control.elevation .brush .selection {
