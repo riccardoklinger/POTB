@@ -130,17 +130,22 @@ function loadTrace(track, i, mode) {
         },
         polyline_options: {
             color: tracks[track].color,
+            id: tracks[track].id
         }
     });
     trace.gpx.on('loaded', function (e) {
         layerControl.addOverlay(e.target, tracks[track].name);
         e.target.addTo(routes)
         map.fitBounds(routes.getBounds());
+        if (mode == "single") {
+            setElevationTrace(0);
+        }
     })
     trace.gpx.on('click', function (e) {
         if (mode == "single") {
             setElevationTrace(0);
         } else {
+            e.target.bindPopup("<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>Details</a>").openPopup();
             setElevationTrace(e.target.options.index)
         }
     })
