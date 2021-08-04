@@ -1,5 +1,5 @@
 // initialize the map
-var map = L.map('map').setView([42.5206, 10.0073], 10);
+var map = L.map('map', {renderer: L.canvas({ tolerance: 10 })}).setView([42.5206, 10.0073], 10);
 
 var DATA = {
     track_1: {
@@ -26,6 +26,18 @@ var DATA = {
         color: "purple",
         name: "Doberdol-Milishevc",
     },
+    /*    track_5: {
+        id: 5,
+        url: 'data/test1.gpx',
+        color: "yellow",
+        name: "Doberdol-Milishevc",
+    },
+        track_6: {
+        id: 6,
+        url: 'data/test2.gpx',
+        color: "black",
+        name: "Doberdol-Milishevc",
+    },*/
 }
 var HOSTCATEGORIES = [
     'pension',
@@ -224,7 +236,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/2/public/values
         var cat = entry['gsx$category']['$t'];
         var image = entry['gsx$photo']['$t'];
         var loc = entry['gsx$location']['$t'];
-        var popupText = loc + ": " + title + "<br>" + "<img src='" + image + "' width='100px'></img>";
+        var popupText = loc + ": " + title + "<br>" + "<img src='" + image + "' width='200px'></img>";
         var markerLocation = new L.LatLng(lat, lon);
         var marker = new L.Marker(markerLocation, {icon: colorMarker(cat)}).bindPopup(popupText);
         console.log(title)
