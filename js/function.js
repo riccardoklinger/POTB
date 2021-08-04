@@ -216,7 +216,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values
                 shadowSize: [64, 80], // size of the shadow
                 iconAnchor: [24, 65], // point of the icon which will correspond to marker's location
                 shadowAnchor: [24, 81], // the same for the shadow
-                popupAnchor: [24, -56] // point from which the popup should open relative to the iconAnchor
+                popupAnchor: [0, -60] // point from which the popup should open relative to the iconAnchor
             })
         }).bindPopup(popupText);
         console.log(title)
@@ -265,7 +265,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/2/public/values
                 shadowSize: [64, 80], // size of the shadow
                 iconAnchor: [24, 65], // point of the icon which will correspond to marker's location
                 shadowAnchor: [24, 81], // the same for the shadow
-                popupAnchor: [24, -56] // point from which the popup should open relative to the iconAnchor
+                popupAnchor: [0, -60] // point from which the popup should open relative to the iconAnchor
             })
         }).bindPopup(popupText);
         console.log(title)
