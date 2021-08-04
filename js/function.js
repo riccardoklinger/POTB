@@ -37,7 +37,7 @@ var elevation_options = {
     // Default chart colors: theme lime-theme, magenta-theme, ...
     theme: "lightblue-theme",
     // Chart container outside/inside map container
-    detached: true,
+    detached: false,
     // if (detached), the elevation chart container
     elevationDiv: "#elevationProfile",
     // if (!detached) autohide chart profile on chart mouseleave
