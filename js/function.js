@@ -56,7 +56,7 @@ var elevation_options = {
     detached: false,
     width: 400,
     // if (detached), the elevation chart container
-    elevationDiv: "#elevationProfile",
+    //elevationDiv: "#elevationProfile",
     // if (!detached) autohide chart profile on chart mouseleave
     autohide: false,
     // if (!detached) initial state of chart profile control
