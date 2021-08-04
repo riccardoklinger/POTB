@@ -115,6 +115,7 @@ var baseLayers = {
 var overlays = {};
 var controlElevation = L.control.elevation(elevation_options);
 controlElevation.loadChart(map);
+controlElevation.hide()
 var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 
 
@@ -138,20 +139,26 @@ function loadTrace(track, i, mode) {
         e.target.addTo(routes)
         map.fitBounds(routes.getBounds());
         if (mode == "single") {
+            controlElevation.show()
+            
             setElevationTrace(0);
+            
         }
     })
     trace.gpx.on('click', function (e) {
+        
+        //console.log(ele)
         if (mode == "single") {
             setElevationTrace(0);
         } else {
+            controlElevation.show();
             e.target.bindPopup("<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>Details</a>").openPopup();
             setElevationTrace(e.target.options.index)
         }
     })
     trace.gpx.on("addline", function (e) {
         trace.line = e.line;
-
+        //controlElevation._expand()
     })
 
     trace.gpx.addTo(map);
@@ -161,12 +168,17 @@ function loadTrace(track, i, mode) {
 function setElevationTrace(index) {
     var trace = traces[index];
     controlElevation.clear();
-
     var q = document.querySelector.bind(document);
     controlElevation.addData(trace.line);
-
     map.fitBounds(trace.gpx.getBounds());
+    function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
+// Usage!
+sleep(1000).then(() => {
+    controlElevation._expand()
+});
 
 }
 
