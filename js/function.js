@@ -61,7 +61,7 @@ var elevation_options = {
     // if (!detached) initial state of chart profile control
     collapsed: true,
     // if (!detached) control position on one of map corners
-    position: "bottomright",
+    //position: "bottomright",
     // Autoupdate map center on chart mouseover.
     followMarker: true,
     // Autoupdate map bounds on chart update.
@@ -113,10 +113,11 @@ var baseLayers = {
 
 
 var overlays = {};
+
+var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 var controlElevation = L.control.elevation(elevation_options);
 controlElevation.loadChart(map);
 controlElevation.hide()
-var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 
 
 function loadTrace(track, i, mode) {
