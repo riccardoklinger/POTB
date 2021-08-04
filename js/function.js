@@ -1,5 +1,9 @@
 // initialize the map
-var map = L.map('map', {renderer: L.canvas({ tolerance: 10 })}).setView([42.5206, 10.0073], 10);
+var map = L.map('map', {
+    renderer: L.canvas({
+        tolerance: 10
+    })
+}).setView([42.5206, 10.0073], 10);
 
 var DATA = {
     track_1: {
@@ -53,7 +57,7 @@ var elevation_options = {
     // if (detached), the elevation chart container
     elevationDiv: "#elevationProfile",
     // if (!detached) autohide chart profile on chart mouseleave
-    autohide: true,
+    autohide: false,
     // if (!detached) initial state of chart profile control
     collapsed: true,
     // if (!detached) control position on one of map corners
@@ -198,13 +202,27 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values
         var title = entry['gsx$title']['$t'];
         var lon = entry['gsx$lon']['$t'];
         var lat = entry['gsx$lat']['$t'];
-        var popupText = title;
+        var cat = entry['gsx$category']['$t'];
+        var image = entry['gsx$photo']['$t'];
+        var loc = entry['gsx$location']['$t'];
+        var txt = entry['gsx$description']['$t'];
+        var popupText = loc + ": <b>" + title + "</b><br>" + "<img class='popupImage' src='" + image + "'></img><br>" + txt.substr(0, 80) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>";
         var markerLocation = new L.LatLng(lat, lon);
-        var marker = new L.Marker(markerLocation).bindPopup(popupText);
+        var marker = new L.Marker(markerLocation, {
+            icon: L.icon({
+                iconUrl: 'images/iconDefault.png',
+                shadowUrl: 'images/pin-shadow.png',
+                iconSize: [48, 64], // size of the icon
+                shadowSize: [64, 80], // size of the shadow
+                iconAnchor: [24, 65], // point of the icon which will correspond to marker's location
+                shadowAnchor: [24, 81], // the same for the shadow
+                popupAnchor: [24, -56] // point from which the popup should open relative to the iconAnchor
+            })
+        }).bindPopup(popupText);
         console.log(title)
         group.addLayer(marker);
         marker.on('click', function (e) {
-        this.openPopup();
+            this.openPopup();
         });
     }
     map.addLayer(group);
@@ -236,52 +254,26 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/2/public/values
         var cat = entry['gsx$category']['$t'];
         var image = entry['gsx$photo']['$t'];
         var loc = entry['gsx$location']['$t'];
-        var popupText = loc + ": " + title + "<br>" + "<img src='" + image + "' width='200px'></img>";
+        var txt = entry['gsx$description']['$t'];
+        var popupText = loc + ": <b>" + title + "</b><br>" + "<img class='popupImage' src='" + image + "'></img><br>" + txt.substr(0, 80) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>";
         var markerLocation = new L.LatLng(lat, lon);
-        var marker = new L.Marker(markerLocation, {icon: colorMarker(cat)}).bindPopup(popupText);
+        var marker = new L.Marker(markerLocation, {
+            icon: L.icon({
+                iconUrl: 'images/icon.png',
+                shadowUrl: 'images/pin-shadow.png',
+                iconSize: [48, 64], // size of the icon
+                shadowSize: [64, 80], // size of the shadow
+                iconAnchor: [24, 65], // point of the icon which will correspond to marker's location
+                shadowAnchor: [24, 81], // the same for the shadow
+                popupAnchor: [24, -56] // point from which the popup should open relative to the iconAnchor
+            })
+        }).bindPopup(popupText);
         console.log(title)
         hosts.addLayer(marker);
         marker.on('click', function (e) {
-        this.openPopup();
+            this.openPopup();
         });
     }
     map.addLayer(hosts);
-    layerControl.addOverlay(hosts,"Hosts");
-    function colorMarker(Category) {
-        var greenIcon = L.icon({
-    iconUrl: 'images/leaf-green.png',
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-var redIcon = L.icon({
-    iconUrl: 'images/leaf-red.png',
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-var orangeIcon = L.icon({
-    iconUrl: 'images/leaf-orange.png',
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-  switch (Category) {
-    /*Icons need to be defined beforehand 
-      according to leaflet-color-marker documentation*/
-    case 'Hut':            return greenIcon; break; 
-    case 'Hotel':   return redIcon; break;
-    case 'Guesthouse':   return greenIcon; break;
-    case 'Pension': return orangeIcon; break;
-  }
-}
-
-
-
+    layerControl.addOverlay(hosts, "Hosts");
 });

@@ -28,7 +28,7 @@
 }
 
 .elevation-control.elevation .background {
-  background-color: rgba(70, 130, 180, 0.2);
+  background-color: #FFF;
   border-radius: 5px;
   overflow: visible;
   display: block;
@@ -212,6 +212,11 @@
 
 .elevation-control.elevation .elevation-toggle-icon {
   background: url(../images/elevation.svg) no-repeat center center;
+  background-color: #FFF;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  background-clip: padding-box;
+  width: 44px;
+  height: 44px;
 }
 
 .elevation-control.elevation.elevation-expanded .elevation-toggle-icon.close-button {
