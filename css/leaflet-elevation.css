@@ -462,3 +462,8 @@
   color: #000;
   background: #fff;
 }
+
+#map>div.leaflet-control-container>div:nth-child(4)>div.elevation-control.elevation.lightblue-theme.leaflet-control.elevation-expanded>svg>g>g.area>foreignobject>canvas {
+  margin-left: 40px !important;
+  margin-top: 30px !important;
+}
