@@ -968,9 +968,13 @@
         var _height = height - margins.top - margins.bottom;
 
         svg.attr("viewBox", "0 0 ".concat(width, " ").concat(height)).attr("width", width).attr("height", height);
-        g.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+        console.log(margins.left);
+        //g.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
         clipRect.attr("x", 0).attr("y", 0).attr("width", _width).attr("height", _height);
-        foreignObject.attr('width', _width).attr('height', _height);
+        foreignObject.attr('width', _width).attr('height', _height).attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+        panes.grid.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+        //panes.area.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+        panes.axis.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
         canvas.attr('width', _width).attr('height', _height);
 
         if (ruler) {

@@ -88,7 +88,7 @@ var elevation_options = {
     // Toggle chart ruler filter.
     ruler: true,
     // Toggle chart legend filter.
-    legend: true,
+    legend: false,
     // Toggle "leaflet-almostover" integration
     almostOver: false,
     // Toggle "leaflet-distance-markers" integration
