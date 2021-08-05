@@ -971,9 +971,9 @@
         console.log(margins.left);
         //g.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
         clipRect.attr("x", 0).attr("y", 0).attr("width", _width).attr("height", _height);
-        foreignObject.attr('width', _width).attr('height', _height).attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+        //foreignObject.attr('width', _width).attr('height', _height).attr("transform", "translate(" + margins.left + "," + margins.top + ")");
         panes.grid.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
-        //panes.area.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+        panes.area.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
         panes.axis.attr("transform", "translate(" + margins.left + "," + margins.top + ")");
         canvas.attr('width', _width).attr('height', _height);
 
