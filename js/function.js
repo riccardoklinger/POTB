@@ -95,7 +95,7 @@ var elevation_options = {
     //distanceMarkers: true,
     useLeafletMarker: true,
     // Render chart profiles as Canvas or SVG Paths
-    preferCanvas: true
+    preferCanvas: false
 };
 // load a tile layer
 var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
