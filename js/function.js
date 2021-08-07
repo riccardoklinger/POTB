@@ -160,7 +160,7 @@ function loadTrace(track, i, mode) {
 
                 if (WPs[entry].title == e.target.options.polyline_options.name) {
                     console.log(e.target.options.polyline_options.name)
-                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><br>" + "<img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a> | <a href='" + e.target.options.polyline_options.gps + "' target='_blank'>Download GPX</a>").openPopup();
+                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><br>" + "<img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a><br><a href='" + e.target.options.polyline_options.gps + "' target='_blank'>Download GPX</a>").openPopup();
                 }
 
             }
@@ -170,7 +170,7 @@ function loadTrace(track, i, mode) {
             controlElevation.show();
             for (entry in WPs) {
                 if (WPs[entry].title == e.target.options.polyline_options.name) {
-                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>...Details</a> | <a href='" + e.target.options.polyline_options.gps + "' target='_blank'>Download GPX</a>").openPopup();
+                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>...Details</a><br><a href='" + e.target.options.polyline_options.gps + "' target='_blank'>Download GPX</a>").openPopup();
                 }
             }
             setElevationTrace(e.target.options.index, e.target.options.polyline_options.color)
