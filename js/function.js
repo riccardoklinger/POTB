@@ -166,10 +166,11 @@ function loadTrace(track, i, mode) {
 }
 
 function setElevationTrace(index, color) {
-    map.fitBounds(trace.gpx.getBounds());
+    
     
     //console.log(color);
     var trace = traces[index];
+    map.fitBounds(trace.gpx.getBounds());
     controlElevation.clear();
     var q = document.querySelector.bind(document);
     controlElevation.addData(trace.line);
