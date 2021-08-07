@@ -250,11 +250,11 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values
 });
 
 var logo = L.control({
-    position: 'topleft'
+    position: 'bottomleft'
 });
 logo.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'myControl');
-    var img_log = "<div class='myClass'><img src=\"images/logo.png\" width='30px'></img></div>";
+    var img_log = "<div class='myClass'><img src=\"images/logo.png\" width='60px'></img></div>";
     this._div.innerHTML = img_log;
     return this._div;
 }
