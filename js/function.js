@@ -147,26 +147,29 @@ function loadTrace(track, i, mode) {
         }
     })
     trace.gpx.on('click', function (e) {
+
         
-        //console.log(ele)
         if (mode == "single") {
-            setElevationTrace(0);
+            setElevationTrace(0, e.target.options.polyline_options.color);
         } else {
             controlElevation.show();
             e.target.bindPopup("<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>Details</a>").openPopup();
-            setElevationTrace(e.target.options.index)
+            setElevationTrace(e.target.options.index, e.target.options.polyline_options.color)
         }
     })
     trace.gpx.on("addline", function (e) {
         trace.line = e.line;
-        //controlElevation._expand()
     })
 
     trace.gpx.addTo(map);
     traces.push(trace);
 }
 
-function setElevationTrace(index) {
+function setElevationTrace(index, color) {
+    for (i in traces){
+        traces[i].line.options.color = traces[i].gpx.options.polyline_options.color;
+    }
+    //console.log(color);
     var trace = traces[index];
     controlElevation.clear();
     var q = document.querySelector.bind(document);
