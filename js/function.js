@@ -166,15 +166,14 @@ function loadTrace(track, i, mode) {
 }
 
 function setElevationTrace(index, color) {
-    for (i in traces){
-        traces[i].line.options.color = traces[i].gpx.options.polyline_options.color;
-    }
+    map.fitBounds(trace.gpx.getBounds());
+    
     //console.log(color);
     var trace = traces[index];
     controlElevation.clear();
     var q = document.querySelector.bind(document);
     controlElevation.addData(trace.line);
-    map.fitBounds(trace.gpx.getBounds());
+    
     function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
@@ -183,7 +182,9 @@ function setElevationTrace(index, color) {
 sleep(1000).then(() => {
     controlElevation._expand()
 });
-
+for (i in traces){
+        traces[i].line.options.color = traces[i].gpx.options.polyline_options.color;
+    }
 }
 
 let hashes = window.location.hash;
