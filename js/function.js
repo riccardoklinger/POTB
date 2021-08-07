@@ -154,18 +154,18 @@ function loadTrace(track, i, mode) {
 
 
         if (mode == "single") {
-           
-            for (entry in WPs){
-                
-            
+
+            for (entry in WPs) {
+
+
                 if (WPs[entry].title == e.target.options.polyline_options.name) {
                     console.log(e.target.options.polyline_options.name)
                     e.target.bindPopup("<b>" + WPs[entry].title + "</b><br>" + "<img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>").openPopup();
                 }
-                 
+
             }
             setElevationTrace(0, e.target.options.polyline_options.color);
-            
+
         } else {
             controlElevation.show();
             for (entry in WPs) {
@@ -272,16 +272,20 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values
             })
         }).bindPopup(popupText);
         console.log(title)
-        group.addLayer(marker);
+        if (lat.length > 0) {
+            group.addLayer(marker);
+        }
+
         marker.on('click', function (e) {
             this.openPopup();
         });
     }
+    if (WPs.length == 0){
+        window.error('Failed to load map data, please refresh!')
+    }
     map.addLayer(group);
-}).fail(()=>{
-  window.error('Failed to load map, please refresh!') 
+    layerControl.addOverlay(group, "Waypoints");
 });
-;
 
 var logo = L.control({
     position: 'bottomleft'
@@ -291,8 +295,9 @@ logo.onAdd = function (map) {
     var img_log = "<div class='myClass'><img src=\"images/logo.png\" width='60px'></img></div>";
     this._div.innerHTML = img_log;
     L.control.scale().addTo(map);
+    L.control.browserPrint().addTo(map)
     return this._div;
-    
+
 }
 logo.addTo(map);
 
@@ -327,7 +332,10 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/2/public/values
             })
         }).bindPopup(popupText);
         console.log(title)
-        hosts.addLayer(marker);
+        if (lat.length > 0) {
+            hosts.addLayer(marker);
+        }
+        //hosts.addLayer(marker);
         marker.on('click', function (e) {
             this.openPopup();
         });
