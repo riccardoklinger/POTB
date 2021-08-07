@@ -281,7 +281,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values
         });
     }
     if (WPs.length == 0) {
-        window.error('Failed to load map data, please refresh!')
+        window.alert('Failed to load Waypoints data, please refresh!')
     }
     map.addLayer(group);
     layerControl.addOverlay(group, "Waypoints");
