@@ -95,7 +95,7 @@ var elevation_options = {
     //distanceMarkers: true,
     useLeafletMarker: true,
     // Render chart profiles as Canvas or SVG Paths
-    preferCanvas: false
+    preferCanvas: false,
 };
 // load a tile layer
 var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -134,7 +134,7 @@ function loadTrace(track, i, mode) {
             color: tracks[track].color,
             id: tracks[track].id,
             name: tracks[track].name,
-            //gps: tracks[track].gps,
+            gps: tracks[track].url,
         }
 
     });
@@ -151,7 +151,7 @@ function loadTrace(track, i, mode) {
         }
     })
     trace.gpx.on('click', function (e) {
-
+        console.log(e.target.options.polyline_options.url)
 
         if (mode == "single") {
 
@@ -160,7 +160,7 @@ function loadTrace(track, i, mode) {
 
                 if (WPs[entry].title == e.target.options.polyline_options.name) {
                     console.log(e.target.options.polyline_options.name)
-                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><br>" + "<img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>").openPopup();
+                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><br>" + "<img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a> | <a href='" + e.target.options.polyline_options.gps + "' target='_blank'>Download GPX</a>").openPopup();
                 }
 
             }
@@ -170,7 +170,7 @@ function loadTrace(track, i, mode) {
             controlElevation.show();
             for (entry in WPs) {
                 if (WPs[entry].title == e.target.options.polyline_options.name) {
-                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>...Details</a>").openPopup();
+                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>...Details</a> | <a href='" + e.target.options.polyline_options.gps + "' target='_blank'>Download GPX</a>").openPopup();
                 }
             }
             setElevationTrace(e.target.options.index, e.target.options.polyline_options.color)
@@ -280,7 +280,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values
             this.openPopup();
         });
     }
-    if (WPs.length == 0){
+    if (WPs.length == 0) {
         window.error('Failed to load map data, please refresh!')
     }
     map.addLayer(group);
