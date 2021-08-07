@@ -10,25 +10,25 @@ var DATA = {
         id: 1,
         url: 'data/001-Theth-Valbona.gpx',
         color: "#3490dc",
-        name: "Theth-Valbona",
+        name: "Theth - Valbona",
     },
     track_2: {
         id: 2,
         url: 'data/002-Valbona-Cerem.gpx',
         color: "#f6993f",
-        name: "Valbona-Cerem",
+        name: "Valbona - Cerem",
     },
     track_3: {
         id: 3,
         url: 'data/003-Cerem-Doberdol.gpx',
         color: "red",
-        name: "Cerem-Doberdol",
+        name: "Cerem - Doberdol",
     },
     track_4: {
         id: 4,
         url: 'data/004-Doberdol-Milishevc.gpx',
         color: "purple",
-        name: "Doberdol-Milishevc",
+        name: "Doberdol - Milishevc",
     },
     /*    track_5: {
         id: 5,
@@ -132,28 +132,47 @@ function loadTrace(track, i, mode) {
         },
         polyline_options: {
             color: tracks[track].color,
-            id: tracks[track].id
+            id: tracks[track].id,
+            name: tracks[track].name,
+            //gps: tracks[track].gps,
         }
+
     });
     trace.gpx.on('loaded', function (e) {
+        console.log(e)
         layerControl.addOverlay(e.target, tracks[track].name);
         e.target.addTo(routes)
         map.fitBounds(routes.getBounds());
         if (mode == "single") {
             controlElevation.show()
-            
+
             setElevationTrace(0);
-            
+
         }
     })
     trace.gpx.on('click', function (e) {
 
-        
+
         if (mode == "single") {
+           
+            for (entry in WPs){
+                
+            
+                if (WPs[entry].title == e.target.options.polyline_options.name) {
+                    console.log(e.target.options.polyline_options.name)
+                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><br>" + "<img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>").openPopup();
+                }
+                 
+            }
             setElevationTrace(0, e.target.options.polyline_options.color);
+            
         } else {
             controlElevation.show();
-            e.target.bindPopup("<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>Details</a>").openPopup();
+            for (entry in WPs) {
+                if (WPs[entry].title == e.target.options.polyline_options.name) {
+                    e.target.bindPopup("<b>" + WPs[entry].title + "</b><img class='popupImage' src='" + WPs[entry].image + "'></img><br>" + WPs[entry].desc.substr(0, 160) + "<a href='#" + e.target.options.polyline_options.id + "' onclick='setTimeout(location.reload.bind(location), 1)'>...Details</a>").openPopup();
+                }
+            }
             setElevationTrace(e.target.options.index, e.target.options.polyline_options.color)
         }
     })
@@ -166,24 +185,24 @@ function loadTrace(track, i, mode) {
 }
 
 function setElevationTrace(index, color) {
-    
-    
+
+
     //console.log(color);
     var trace = traces[index];
     map.fitBounds(trace.gpx.getBounds());
     controlElevation.clear();
     var q = document.querySelector.bind(document);
     controlElevation.addData(trace.line);
-    
-    function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
 
-// Usage!
-sleep(1000).then(() => {
-    controlElevation._expand()
-});
-for (i in traces){
+    function sleep(time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
+    // Usage!
+    sleep(1000).then(() => {
+        controlElevation._expand()
+    });
+    for (i in traces) {
         traces[i].line.options.color = traces[i].gpx.options.polyline_options.color;
     }
 }
@@ -209,18 +228,17 @@ if (parseInt(hashes.split("#")[1]) >= 0) {
         console.log(track)
         loadTrace(track, i++, "")
     }
-
-
 }
 id = "19OlGztoPXBhquu674QW02aadb4TINQBX9gODSY7hi54"; //ricardo
 id2 = "1qemF3mEQGON_YomDqP-0_CSsYZJL_yOQSitGKrtdAhM"; //riccardo
+var WPs = [];
 $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values?alt=json", function (data) {
     //first row "title" column
     var entries = data.feed.entry;
     var group = new L.featureGroup();
     //Loop through spreadsheet entries
-    for (var i = 0; i < entries.length; i++) {
-        var entry = entries[i];
+    for (var n = 0; n < entries.length; n++) {
+        var entry = entries[n];
         //Assuming we have columns with these names
         var title = entry['gsx$title']['$t'];
         var lon = entry['gsx$lon']['$t'];
@@ -229,8 +247,19 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values
         var image = entry['gsx$photo']['$t'];
         var loc = entry['gsx$location']['$t'];
         var txt = entry['gsx$description']['$t'];
-        var popupText = loc + ": <b>" + title + "</b><br>" + "<img class='popupImage' src='" + image + "'></img><br>" + txt.substr(0, 80) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>";
+        var gps = entry['gsx$gps']['$t'];
+
+        var popupText = loc + ": <b>" + title + "</b><br>" + "<img class='popupImage' src='" + image + "'></img><br>" + txt.substr(0, 160) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>";
         var markerLocation = new L.LatLng(lat, lon);
+
+        WPs.push({
+            "title": title,
+            "lon": lon,
+            "lat": lat,
+            "image": image,
+            "gps": gps,
+            "desc": txt
+        });
         var marker = new L.Marker(markerLocation, {
             icon: L.icon({
                 iconUrl: 'images/iconDefault.png',
@@ -249,7 +278,10 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/1/public/values
         });
     }
     map.addLayer(group);
+}).fail(()=>{
+  window.error('Failed to load map, please refresh!') 
 });
+;
 
 var logo = L.control({
     position: 'bottomleft'
@@ -258,9 +290,12 @@ logo.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'myControl');
     var img_log = "<div class='myClass'><img src=\"images/logo.png\" width='60px'></img></div>";
     this._div.innerHTML = img_log;
+    L.control.scale().addTo(map);
     return this._div;
+    
 }
 logo.addTo(map);
+
 
 // adding hosts
 $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/2/public/values?alt=json", function (data) {
@@ -278,7 +313,7 @@ $.getJSON("https://spreadsheets.google.com/feeds/list/" + id + "/2/public/values
         var image = entry['gsx$photo']['$t'];
         var loc = entry['gsx$location']['$t'];
         var txt = entry['gsx$description']['$t'];
-        var popupText = loc + ": <b>" + title + "</b><br>" + "<img class='popupImage' src='" + image + "'></img><br>" + txt.substr(0, 80) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>";
+        var popupText = loc + ": <b>" + title + "</b><br>" + "<img class='popupImage' src='" + image + "'></img><br>" + txt.substr(0, 160) + "<a href='" + "http://digital-geography.com" + "' target='_blank'>...more</a>";
         var markerLocation = new L.LatLng(lat, lon);
         var marker = new L.Marker(markerLocation, {
             icon: L.icon({
